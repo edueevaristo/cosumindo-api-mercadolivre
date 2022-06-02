@@ -202,11 +202,11 @@ class Plataformas extends CI_Controller
 		$clienteid = $this->input->post('recebeIdCliente');
 		
 		//idclientesparateste = 202593498,670174328,3484260
-		$quebra = explode(",", $clienteid);
+		$buscaVariosClientes = explode(",", $clienteid);
 		$html =  "";
 		
-		foreach($quebra as $novoId){
-			$data = $this->getCliente($novoId);
+		foreach($buscaVariosClientes as $idCliente){
+			$data = $this->getCliente($idCliente);
 			
 			$html .=
 			"<tr>
@@ -214,12 +214,25 @@ class Plataformas extends CI_Controller
 			<td>{$data->nickname}</td>
 			<td>{$data->registration_date}</td>
 			<td>{$data->country_id}</td>
+			<td>{$data->address->city}</td>
+			<td>{$data->address->state}</td>
 			<td>{$data->user_type}</td>
+			<td>{$data->tags[0]}</td>
+			<td>{$data->tags[1]}</td>
+			<td>{$data->logo}</td>
 			<td>{$data->points}</td>
+			<td>{$data->site_id}</td>
 			<td>{$data->permalink}</td>
-			<td>{$data->tags[0]}</td> 
-			<td>{$data->status->site_status}</td>
+			<td>{$data->seller_reputation->level_id}</td>
+			<td>{$data->seller_reputation->power_seller_status}</td>
+			<td>{$data->seller_reputation->transactions->canceled}</td>
+			<td>{$data->seller_reputation->transactions->completed}</td>
+			<td>{$data->seller_reputation->transactions->period}</td>
+			<td>{$data->seller_reputation->transactions->ratings->negative}</td>
 			<td>{$data->seller_reputation->transactions->ratings->neutral}</td>
+			<td>{$data->seller_reputation->transactions->ratings->negative}</td>
+			<td>{$data->seller_reputation->transactions->total}</td>
+			<td>{$data->status->site_status}</td>
 
 			</tr>
 			";
@@ -231,12 +244,12 @@ class Plataformas extends CI_Controller
 	}
 
 	//API BUSCA CLIENTE
-	public function getCliente($recebeId) {
+	public function getCliente($idCliente) {
 		
 		$curl = curl_init();
 
 		curl_setopt_array($curl, array(
-		CURLOPT_URL => "https://api.mercadolibre.com/users/$recebeId",
+		CURLOPT_URL => "https://api.mercadolibre.com/users/$idCliente",
 		CURLOPT_RETURNTRANSFER => true,
 		CURLOPT_ENCODING => '',
 		CURLOPT_MAXREDIRS => 10,

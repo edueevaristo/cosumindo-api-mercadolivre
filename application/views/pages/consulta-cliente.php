@@ -21,6 +21,10 @@
 					<th>Tipo</th>
 					<th>Pontos</th>
 					<th>Link de acesso</th>
+					
+					
+
+
 				</tr>
 				
 			</thead>

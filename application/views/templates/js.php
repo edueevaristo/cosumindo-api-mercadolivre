@@ -34,7 +34,7 @@
                 }
 
                 $.post(base + "/listaTabela", {
-                         'mlb' : mlb
+                         mlb : mlb
                         },
                         function (recebe) {
                             $('#tdTabela').html(recebe.html);
