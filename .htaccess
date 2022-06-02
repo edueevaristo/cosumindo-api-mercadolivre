@@ -1,0 +1,14 @@
+#RewriteEngine on
+#RewriteCond %{HTTPS} off
+#RewriteCond %{HTTP_HOST} !^www\.(.*)$ [NC]
+#RewriteRule ^(.*)$ https://www.%{HTTP_HOST}/$1 [R=301,L]
+#
+#RewriteCond %{HTTPS} off
+#RewriteRule (.*) https://%{HTTP_HOST}/$1 [R=301,L]
+#
+#RewriteCond %{HTTPS} on
+#RewriteCond %{HTTP_HOST} !^www\.(.*)$ [NC]
+#RewriteRule ^(.*)$ https://www.%{HTTP_HOST}/$1 [R=301,L]
+RewriteEngine on
+RewriteCond $1 !^(index\.php|uploads|api|vtex|assets|pagespeed_global_admin|.well-known|pagespeed_admin|robots\.txt|sitemap\.xml)
+RewriteRule ^(.*)$ index.php/$1 [L]
