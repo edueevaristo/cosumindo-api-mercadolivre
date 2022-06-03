@@ -112,10 +112,10 @@ class Plataformas extends CI_Controller
 
 		foreach($explodir as $isMlb){
 	
-			$getDadosErros = $this->getDados($isMlb);
-			$dados = json_decode($getDadosErros->body);
+			$getErros = $this->getDados($isMlb);
+			$dados = json_decode($getErros->body);
 
-			if($getDadosErros->httpCode != 200) 
+			if($getErros->httpCode != 200) 
 			{
 				echo "O MLB inserido não foi encontrado";
 				return;
@@ -152,7 +152,7 @@ class Plataformas extends CI_Controller
 				";
 			}
 		
-		} 
+		}
 		echo json_encode(['html' => $html]);		  
 }
 
@@ -178,11 +178,10 @@ class Plataformas extends CI_Controller
 			'httpCode' => $code,
 			'body' => $response
 		];
+
+
+	
 	}
-
-
-
-
 
 
 	public function consultacliente()
@@ -239,7 +238,7 @@ class Plataformas extends CI_Controller
 
 		}
 
-		echo json_encode(['html' => $html]);		  
+		echo json_encode(['html' => $html]);
 
 	}
 
@@ -261,7 +260,44 @@ class Plataformas extends CI_Controller
 
 		$response = curl_exec($curl);
 		curl_close($curl);
-		return $transform = json_decode($response);
+		return json_decode($response);
+	}
+
+
+
+	public function consultaviapelido() {
+
+		$data['title'] = 'Consulta de Cliente via Apelido';
+
+		$this->load->view('templates/header', $data);
+		$this->load->view('templates/nav-top', $data);
+		$this->load->view('pages/outraconsulta', $data);
+		$this->load->view('templates/footer', $data);
+		$this->load->view('templates/js', $data);
+
+	}
+
+	//CONSULTAR CLIENTE ID ATRAVÉS DO APELIDO
+	public function consultaidcliente() {
+
+		$curl = curl_init();
+		// TETE2870021
+		curl_setopt_array($curl, array(
+		CURLOPT_URL => 'https://api.mercadolibre.com/sites/MLA/search?nickname= ',
+		CURLOPT_RETURNTRANSFER => true,
+		CURLOPT_ENCODING => '',
+		CURLOPT_MAXREDIRS => 10,
+		CURLOPT_TIMEOUT => 0,
+		CURLOPT_FOLLOWLOCATION => true,
+		CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+		CURLOPT_CUSTOMREQUEST => 'GET',
+		));
+
+		$response = curl_exec($curl);
+
+		curl_close($curl);
+		echo $response;
+
 	}
 }
 

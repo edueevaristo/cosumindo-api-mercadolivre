@@ -13,7 +13,8 @@
             listaDados();
         });
 
-        $('#btnBuscarCliente').click(function(){
+        $('#btnBuscarCliente').click(function()
+        {
             dadosCliente();
         });
 
@@ -34,7 +35,7 @@
                 }
 
                 $.post(base + "/listaTabela", {
-                         mlb : mlb
+                         'mlb' : mlb
                         },
                         function (recebe) {
                             $('#tdTabela').html(recebe.html);
@@ -42,7 +43,7 @@
                         }, 'json')
 
 
-                // if(mlb != $('#buscaMlb').val()) {
+                // if(mlb != mlb) {
                 //     $('#tdTabela').remove();
                 // }
             }
