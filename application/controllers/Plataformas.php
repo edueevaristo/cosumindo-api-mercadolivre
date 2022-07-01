@@ -14,8 +14,7 @@ class Plataformas extends CI_Controller
 	//LISTAR PLATAFORMA
 	public function index()
 	{
-		$data['plataformas'] = $this->plataforma->index();
-		// print_r($data);
+		//$data['plataformas'] = $this->plataforma->index();
 		$data['title'] = 'Dashboard de Plataformas';
 		$this->load->view('templates/header', $data);
 		$this->load->view('templates/nav-top', $data);
@@ -73,7 +72,7 @@ class Plataformas extends CI_Controller
 	public function editar($id) 
 	{
 		$plataforma = $_POST;
-		$this->plataforma->editar($id, $plataforma);
+		$this->plataforma->editar($id);
 		redirect("plataformas");
 	}
 
