@@ -70,38 +70,3 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | The $query_builder variables lets you determine whether or not to load
 | the query builder class.
 */
-$active_group = 'default';
-$query_builder = TRUE;
-
-$porta = 15433; //pgpool
-$host = '10.0.0.106'; //pg bouncer do servidor paginas
-$user = 'postgres';
-$pass = '16531653';
-
-$db['default'] = array(
-
-	'dsn'	=> '',
-//	'hostname' => $host,
-	'hostname' => 'fcserver.fabricadecodigos.com.br',
-	'username' => $user,
-	'password' => $pass,
-	'database' => 'shopping_de_precos',
-	'dbdriver' => 'postgre',
-	'dbprefix' => '',
-	'schema'   => 'public',
-	'pconnect' => false,
-	'port'     => $porta,
-	//'db_debug' => $debug,
-	'cache_on' => false,
-	'cachedir' => './tmp',
-	'char_set' => 'SQL_ASCII',
-	'dbcollat' => 'utf8_general_ci',
-	'swap_pre' => '',
-	'timezone' => 'America/Sao_Paulo',
-	'autoinit' => TRUE,
-	'encrypt' => FALSE,
-	'compress' => false,
-	'stricton' => FALSE,
-	'failover' => array(),
-	//'save_queries' => $debug
-);
