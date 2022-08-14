@@ -49,9 +49,6 @@ class Plataformas extends CI_Controller
 			$getErros = $this->ml->getDados($isMlb);
 			$dados = json_decode($getErros->body);
 
-			// echo "<pre>";
-			// var_dump(json_encode($dados));
-
 			if($getErros->httpCode != 200) 
 			{
 				echo "O MLB inserido não foi encontrado";
@@ -114,9 +111,6 @@ class Plataformas extends CI_Controller
 			$data = $this->ml->getCliente($idCliente);
 			$conteudo = json_decode($data->body);
 
-			var_dump($conteudo);
-			die;
-			
 
 			// Tratar link
 			$linkAcesso = $conteudo->permalink;
@@ -180,11 +174,11 @@ class Plataformas extends CI_Controller
 	// 	$html = "";
 		
 	// 	foreach($busca as $userid){
-	// 		$getDados = $this->ml->getEnderecoVendedor($userid);
+	// 		$getDados = $this->ml->getProdutos($userid);
 	// 		$dados = json_decode($getDados->body);
 
-	// 		// var_dump(json_encode($dados));
-	// 		// die;
+	// 		var_dump(json_encode($dados));
+	// 		die;
 
 			
 	// 		$html .=

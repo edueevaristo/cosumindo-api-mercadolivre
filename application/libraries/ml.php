@@ -27,6 +27,10 @@ class Ml {
 		return $this->executaCURL(self::GET, "users/$idCliente");
 	}
 	
+	// public function getProdutos($user_id)
+	// {
+	// 	return $this->executaCURL(self::GET, "users/$user_id/addresses");
+	// }
 
 	public function executaCURL($metodo, $uri) {
 
