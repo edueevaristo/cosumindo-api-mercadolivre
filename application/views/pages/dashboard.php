@@ -22,7 +22,7 @@
 
     <div class="col">
 		<div class="btn-group">
-			<a href="<?= base_url('')?>plataformas/consultaviapelido" class="btn btn-md btn-outline-secondary"><i></i>Consultar ID via Apelido</a>
+			<a href="<?= base_url('')?>plataformas/consultaviapelido" class="btn btn-md btn-outline-secondary disabled"><i></i>Em breve</a>
 		</div>
 	</div>
 

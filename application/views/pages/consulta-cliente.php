@@ -2,7 +2,7 @@
 	<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
 			<h1 class="h2 col-lg-6"><?= $title ?></h1>
         	<div class="input-group rounded">
-				<input method="post" type="search" id="buscaCliente" class="form-control rounded p-2 col-lg-4 ml-8" placeholder="Insira o clienteID" aria-label="Search" aria-describedby="search-addon" />
+				<input method="post" type="search" id="buscaCliente" class="form-control rounded p-2 col-lg-4 ml-8" placeholder="Insira o Seller_ID" aria-label="Search" aria-describedby="search-addon" />
 				<span class="input-group-text border-0 ml-2" id="search-addon">
 				<i id="btnBuscarCliente" class="fas fa-search" type="button"></i>
         		</span>

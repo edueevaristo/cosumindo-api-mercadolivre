@@ -54,6 +54,10 @@
     function dadosCliente()
             {
                 var id = $('#buscaCliente').val();
+                if($.trim(id)==""){
+                   alert('Digite um SellerID válido') ;
+                   return;
+                }
 
                 $.post(base + "/listaTabelaCliente", {
                         recebeIdCliente : id
@@ -66,6 +70,10 @@
     function dadosClienteId()
             {
                 var apelido = $('#buscaDadosCliente').val();
+                if($.trim(apelido)==""){
+                   alert('Digite um apelido válido') ;
+                   return;
+                }
 
                 $.post(base + "/listaTabelaId", {
                     recebeApelidoCliente : apelido
