@@ -7,89 +7,24 @@ class Plataformas extends CI_Controller
 	public function __construct()
 	{
 		parent::__construct();
-		$this->load->model("Plataforma_model", "plataforma");
+		$this->load->library('ml');
+
 	}
 
 
-	//LISTAR PLATAFORMA
+	//Inicial
 	public function index()
 	{
-		//$data['plataformas'] = $this->plataforma->index();
-		$data['title'] = 'Dashboard de Plataformas';
+		$data['title'] = 'Tipos de Consultas';
 		$this->load->view('templates/header', $data);
 		$this->load->view('templates/nav-top', $data);
-		$this->load->view('pages/plataformas', $data);
+		$this->load->view('pages/dashboard', $data);
 		$this->load->view('templates/footer', $data);
 		$this->load->view('templates/js', $data);
 	}
 
 
-
-	// INSERT PLATAFORMA
-	public function cadastrar()
-	{
-		$data["title"] = 'Adicionar Plataforma';
-		$this->load->view('templates/header', $data);
-		$this->load->view('templates/nav-top', $data);
-		$this->load->view('pages/formulario', $data);
-		$this->load->view('templates/footer', $data);
-		$this->load->view('templates/js', $data);
-	}
-
-	public function inserir()
-	{
-		$plataforma = $_POST;
-		$return = $this->plataforma->inserir($plataforma);
-		redirect("plataformas");
-	}
-
-	
-
-
-	// UPDATE PLATAFORMA
-	public function atualizar($id)
-	{
-		$data["title"] = 'Atualizar Plataforma';
-		$this->load->view('templates/header', $data);
-		$this->load->view('templates/nav-top', $data);
-		$this->load->view('pages/formulario', $data);
-		$this->load->view('templates/footer', $data);
-		$this->load->view('templates/js', $data);
-	}
-
-	public function mostrar($id)
-	{
-		$data["title"] = 'Atualizar Plataforma';
-		$data["plataforma"] = $this->plataforma->mostrar($id);
-
-		$this->load->view('templates/header', $data);
-		$this->load->view('templates/nav-top', $data);
-		$this->load->view('pages/formulario', $data);
-		$this->load->view('templates/footer', $data);
-		$this->load->view('templates/js', $data);
-	}
-
-	public function editar($id) 
-	{
-		$plataforma = $_POST;
-		$this->plataforma->editar($id);
-		redirect("plataformas");
-	}
-
-
-
-
-	//DELETE PLATAFORMA
-	public function deletar($id)
-	{
-		$this->plataforma->deletar($id, $plataforma);
-		redirect('plataformas');
-	}
-
-
-
-
-	//Consulta ANUNCIO API
+	//Consulta ANUNCIO via MLB
 	public function consulta()
 	{  
 		$data['title'] = 'Consulta de Dados dos Anúncios';
@@ -102,17 +37,20 @@ class Plataformas extends CI_Controller
 	}
 	
 
-	//LISTA TABELA ANUNCIO API
 	public function listaTabela()
 	{
+		
 		$mlb = $this->input->post('mlb');
-		$explodir = explode("/", $mlb);
-		$html= ""; //para obter o acesso dentro do foreach
+		$explodir = explode(",", $mlb);
+		$html= "";
 
 		foreach($explodir as $isMlb){
-	
-			$getErros = $this->getDados($isMlb);
+
+			$getErros = $this->ml->getDados($isMlb);
 			$dados = json_decode($getErros->body);
+
+			// echo "<pre>";
+			// var_dump(json_encode($dados));
 
 			if($getErros->httpCode != 200) 
 			{
@@ -124,68 +62,38 @@ class Plataformas extends CI_Controller
 			
 				"<tr>
 				<td>{$dados->id}</td>
-				<td>{$dados->site_id}</td>
 				<td>{$dados->title}</td>
+				<td><a target='_blank' href={$dados->permalink}>{$dados->permalink}</a></td>
 				<td>{$dados->seller_id}</td>
 				<td>{$dados->category_id}</td>
-				<td>{$dados->price}</td>
-				<td>{$dados->currency_id}</td>
-				</tr>"; 
-
+				<td style='width:90px'><p> R$ {$dados->price}</p></td>
+				"; 
 
 			foreach($dados->sale_terms as $sale) {
 				$html .= "
-				<tr>
-					
-					<td><b>Tempo/Tipo de Garatia: </b>{$sale->value_name}</td>
-				</tr>
+					<td>{$sale->value_name}</td>
+
 				";
 			}
-
-			foreach($dados->pictures as $img){
+				
 				$html .= "
-
-				<tr>
-				<td id='img_url'><a><img style='width: 100px;' src={$img->url}></a></td>
+				<td id='img_url'><a><img style='
+				width: 100px; 
+				display: block; 
+				float: right; 
+				margin-right: 10px;' src={$dados->thumbnail}></a></td>
 				</tr>
 				";
-			}
 		
 		}
 		echo json_encode(['html' => $html]);		  
 }
 
-	//API BUSCA ANUNCIO
-	public function getDados($mlb) {
-		$curl = curl_init();
-
-		curl_setopt_array($curl, array(
-		CURLOPT_URL => "https://api.mercadolibre.com/items/$mlb",
-		CURLOPT_RETURNTRANSFER => true,
-		CURLOPT_ENCODING => '',
-		CURLOPT_MAXREDIRS => 10,
-		CURLOPT_TIMEOUT => 0,
-		CURLOPT_FOLLOWLOCATION => true,
-		CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-		CURLOPT_CUSTOMREQUEST => 'GET',
-		));
-
-		$response = curl_exec($curl);
-		$code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-		curl_close($curl);
-		return (object) [
-			'httpCode' => $code,
-			'body' => $response
-		];
-
-
-	
-	}
 
 
 	public function consultacliente()
 	{
-		$data['title'] = 'Consultando o Cliente';
+		$data['title'] = 'Consulta de Clientes via ID';
 		
 		$this->load->view('templates/header', $data);
 		$this->load->view('templates/nav-top', $data);
@@ -199,39 +107,43 @@ class Plataformas extends CI_Controller
 	{
 		$clienteid = $this->input->post('recebeIdCliente');
 		
-		//idclientesparateste = 202593498,670174328,3484260
-		$buscaVariosClientes = explode(",", $clienteid);
+		$explodir = explode(",", $clienteid);
 		$html =  "";
 		
-		foreach($buscaVariosClientes as $idCliente){
-			$data = $this->getCliente($idCliente);
+		foreach($explodir as $idCliente){
+			$data = $this->ml->getCliente($idCliente);
+			$conteudo = json_decode($data->body);
+
+			var_dump($conteudo);
+			die;
 			
+
+			// Tratar link
+			$linkAcesso = $conteudo->permalink;
+			$link = str_replace('http://perfil.mercadolivre.com.br/', 'http://mercadolivre.com.br/perfil/', $linkAcesso);
+
+
+			//Tratar status (tradução)
+			$statusConta = $conteudo->status->site_status;
+			if($statusConta === 'active') {
+				$status = str_replace("active", "ativo", $statusConta);
+			} else {
+				$status = str_replace("deactive", "inativo", $statusConta);
+			}
+			
+
 			$html .=
 			"<tr>
-			<td>{$data->id}</td>
-			<td>{$data->nickname}</td>
-			<td>{$data->registration_date}</td>
-			<td>{$data->country_id}</td>
-			<td>{$data->address->city}</td>
-			<td>{$data->address->state}</td>
-			<td>{$data->user_type}</td>
-			<td>{$data->tags[0]}</td>
-			<td>{$data->tags[1]}</td>
-			<td>{$data->logo}</td>
-			<td>{$data->points}</td>
-			<td>{$data->site_id}</td>
-			<td>{$data->permalink}</td>
-			<td>{$data->seller_reputation->level_id}</td>
-			<td>{$data->seller_reputation->power_seller_status}</td>
-			<td>{$data->seller_reputation->transactions->canceled}</td>
-			<td>{$data->seller_reputation->transactions->completed}</td>
-			<td>{$data->seller_reputation->transactions->period}</td>
-			<td>{$data->seller_reputation->transactions->ratings->negative}</td>
-			<td>{$data->seller_reputation->transactions->ratings->neutral}</td>
-			<td>{$data->seller_reputation->transactions->ratings->negative}</td>
-			<td>{$data->seller_reputation->transactions->total}</td>
-			<td>{$data->status->site_status}</td>
-
+			<td>{$conteudo->id}</td>
+			<td>{$conteudo->nickname}</td>
+			<td>{$conteudo->registration_date}</td>
+			<td>{$conteudo->country_id}</td>
+			<td>{$conteudo->address->state}</td>
+			<td>{$conteudo->address->city}</td>
+			<td>{$conteudo->user_type}</td>
+			<td>{$conteudo->seller_reputation->power_seller_status}</td>
+			<td><a target='_blank' href={$link}>{$link}</a></td>
+			<td>{$status}</td>
 			</tr>
 			";
 
@@ -241,64 +153,51 @@ class Plataformas extends CI_Controller
 
 	}
 
-	//API BUSCA CLIENTE
-	public function getCliente($idCliente) {
-		
-		$curl = curl_init();
-
-		curl_setopt_array($curl, array(
-		CURLOPT_URL => "https://api.mercadolibre.com/users/$idCliente",
-		CURLOPT_RETURNTRANSFER => true,
-		CURLOPT_ENCODING => '',
-		CURLOPT_MAXREDIRS => 10,
-		CURLOPT_TIMEOUT => 0,
-		CURLOPT_FOLLOWLOCATION => true,
-		CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-		CURLOPT_CUSTOMREQUEST => 'GET',
-		));
-
-		$response = curl_exec($curl);
-		curl_close($curl);
-		return json_decode($response);
-	}
-
-
+	
 
 	public function consultaviapelido() {
 
-		$data['title'] = 'Consulta de Cliente via Apelido';
+		$data['title'] = 'Consulta de ClienteID via Apelido';
 
 		$this->load->view('templates/header', $data);
 		$this->load->view('templates/nav-top', $data);
-		$this->load->view('pages/outraconsulta', $data);
+		$this->load->view('pages/consultaviapelido', $data);
 		$this->load->view('templates/footer', $data);
 		$this->load->view('templates/js', $data);
 
 	}
 
-	//CONSULTAR CLIENTE ID ATRAVÉS DO APELIDO
-	public function consultaidcliente() {
+	/* Operator "??"..
+	It's a null coalescing operator. It's a shorthand for:
+	<code> = explode("," , isset() ?  : '');
+	</code> 
+	*/
+	// public function listaTabelaId()
+	// {
+	// 	$apelido = $this->input->post('buscaDadosCliente');
+	// 	$busca = explode("," , $apelido ?? '');
 
-		$curl = curl_init();
-		// TETE2870021
-		curl_setopt_array($curl, array(
-		CURLOPT_URL => 'https://api.mercadolibre.com/sites/MLA/search?nickname= ',
-		CURLOPT_RETURNTRANSFER => true,
-		CURLOPT_ENCODING => '',
-		CURLOPT_MAXREDIRS => 10,
-		CURLOPT_TIMEOUT => 0,
-		CURLOPT_FOLLOWLOCATION => true,
-		CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-		CURLOPT_CUSTOMREQUEST => 'GET',
-		));
+	// 	$html = "";
+		
+	// 	foreach($busca as $userid){
+	// 		$getDados = $this->ml->getEnderecoVendedor($userid);
+	// 		$dados = json_decode($getDados->body);
 
-		$response = curl_exec($curl);
+	// 		// var_dump(json_encode($dados));
+	// 		// die;
 
-		curl_close($curl);
-		echo $response;
+			
+	// 		$html .=
+	// 		"<tr>
+	// 			<td>{}</td>
+	// 			<td>{}</td>
+	
+	// 		</tr>
+	// 		";
 
-	}
+	// 	}
+
+	// 	echo json_encode(['html' => $html]);
+	
+	// }
 }
-
-
-

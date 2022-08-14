@@ -2,9 +2,9 @@
 	<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
 			<h1 class="h2 col-lg-6"><?= $title ?></h1>
         	<div class="input-group rounded">
-				<input method="post" type="search" id="buscaMlb" class="form-control rounded p-2 col-lg-4 ml-8" placeholder="Insira o MLB" aria-label="Search" aria-describedby="search-addon" />
+				<input method="post" type="search" id="buscaDadosCliente" class="form-control rounded p-2 col-lg-4 ml-8" placeholder="Insira o apelido" aria-label="Search" aria-describedby="search-addon" />
 				<span class="input-group-text border-0 ml-2" id="search-addon">
-				<i id="btnBuscarMlb" class="fas fa-search" type="button"></i>
+				<i id="btnBuscarApelido" class="fas fa-search" type="button"></i>
         		</span>
         	</div>
 	</div>
@@ -14,19 +14,16 @@
 		<table class="table table-bordered table-hover">
 			<thead>
 				<tr>
-					<th>MLB</th>
-					<th>Título</th>
-					<th>Link do Anúncio</th>
-					<th>Seller_ID</th>
-					<th>Categoria_ID</th>
-					<th>Preço</th>
-					<th>Tipo de <br>garatia</th>
-					<th>Tempo de <br>garantia</th>
-					<th>Imagem principal</th>
+					<th>ID do Cliente</th>
+					<th>Reputação Atual</th>
+					<th>País de Origem</th>
+					<th>Estado (Sigla)</th>
+					<th>Estado</th>
+					<th>Cidade de Origem</th>
 				</tr>
 				
 			</thead>
-			<tbody id="tdTabela"></tbody>
+			<tbody id="tdTabelaClienteViaApelido"></tbody>
         </table>
 
 	</div>
