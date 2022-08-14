@@ -18,11 +18,18 @@
             dadosCliente();
         });
 
+        $('#btnBuscarApelido').click(function()
+        {
+            dadosClienteId();
+        });
+
 
         //setado para teste
         $('#buscaMlb').val('MLB2074204203');
         
         $('#buscaCliente').val('202593498');
+
+        $('#buscaApelido').val('TETE2870021');
         
     });
     
@@ -41,11 +48,7 @@
                             $('#tdTabela').html(recebe.html);
 
                         }, 'json')
-
-
-                // if(mlb != mlb) {
-                //     $('#tdTabela').remove();
-                // }
+                        
             }
     
     function dadosCliente()
@@ -59,6 +62,20 @@
                         $('#tdTabelaCliente').html(recebeCliente.html);
                     },'json')
             }
+
+    function dadosClienteId()
+            {
+                var apelido = $('#buscaDadosCliente').val();
+
+                $.post(base + "/listaTabelaId", {
+                    recebeApelidoCliente : apelido
+                    },
+                    function (recebeApelidoData) {
+                        $('#tdTabelaClienteViaApelido').html(recebeApelidoData.html);
+                    }, 'json')
+            }   
+            
+            
 </script>
 </body>
 </html>
