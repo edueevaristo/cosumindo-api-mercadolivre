@@ -10,6 +10,7 @@ class Ml {
 
     public function __construct() {
 
+		//Url master
 		$this->url = 'https://api.mercadolibre.com/';
 
     }
