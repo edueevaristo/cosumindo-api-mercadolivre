@@ -28,7 +28,6 @@ class Plataformas extends CI_Controller
 	public function consulta()
 	{  
 		$data['title'] = 'Consulta de Dados dos Anúncios';
-
 		$this->load->view('templates/header', $data);
 		$this->load->view('templates/nav-top', $data);
 		$this->load->view('pages/consulta', $data);
@@ -39,7 +38,6 @@ class Plataformas extends CI_Controller
 
 	public function listaTabela()
 	{
-		
 		$mlb = $this->input->post('mlb');
 		$explodir = explode(",", $mlb);
 		$html= "";
@@ -56,7 +54,6 @@ class Plataformas extends CI_Controller
 			} 
 		
 			$html .=
-			
 				"<tr>
 				<td>{$dados->id}</td>
 				<td>{$dados->title}</td>
@@ -69,7 +66,6 @@ class Plataformas extends CI_Controller
 			foreach($dados->sale_terms as $sale) {
 				$html .= "
 					<td>{$sale->value_name}</td>
-
 				";
 			}
 				
@@ -91,7 +87,6 @@ class Plataformas extends CI_Controller
 	public function consultacliente()
 	{
 		$data['title'] = 'Consulta de Clientes via ID';
-		
 		$this->load->view('templates/header', $data);
 		$this->load->view('templates/nav-top', $data);
 		$this->load->view('pages/consulta-cliente', $data);
@@ -103,7 +98,6 @@ class Plataformas extends CI_Controller
 	public function listaTabelaCliente()
 	{
 		$clienteid = $this->input->post('recebeIdCliente');
-		
 		$explodir = explode(",", $clienteid);
 		$html =  "";
 		
@@ -111,11 +105,9 @@ class Plataformas extends CI_Controller
 			$data = $this->ml->getCliente($idCliente);
 			$conteudo = json_decode($data->body);
 
-
 			// Tratar link
 			$linkAcesso = $conteudo->permalink;
 			$link = str_replace('http://perfil.mercadolivre.com.br/', 'http://mercadolivre.com.br/perfil/', $linkAcesso);
-
 
 			//Tratar status (tradução)
 			$statusConta = $conteudo->status->site_status;
@@ -124,7 +116,6 @@ class Plataformas extends CI_Controller
 			} else {
 				$status = str_replace("deactive", "inativo", $statusConta);
 			}
-			
 
 			$html .=
 			"<tr>
@@ -147,8 +138,6 @@ class Plataformas extends CI_Controller
 
 	}
 
-	
-
 	public function consultaviapelido() {
 
 		$data['title'] = 'Consulta de ClienteID via Apelido';
@@ -160,38 +149,4 @@ class Plataformas extends CI_Controller
 		$this->load->view('templates/js', $data);
 
 	}
-
-	/* Operator "??"..
-	It's a null coalescing operator. It's a shorthand for:
-	<code> = explode("," , isset() ?  : '');
-	</code> 
-	*/
-	// public function listaTabelaId()
-	// {
-	// 	$apelido = $this->input->post('buscaDadosCliente');
-	// 	$busca = explode("," , $apelido ?? '');
-
-	// 	$html = "";
-		
-	// 	foreach($busca as $userid){
-	// 		$getDados = $this->ml->getProdutos($userid);
-	// 		$dados = json_decode($getDados->body);
-
-	// 		var_dump(json_encode($dados));
-	// 		die;
-
-			
-	// 		$html .=
-	// 		"<tr>
-	// 			<td>{}</td>
-	// 			<td>{}</td>
-	
-	// 		</tr>
-	// 		";
-
-	// 	}
-
-	// 	echo json_encode(['html' => $html]);
-	
-	// }
 }

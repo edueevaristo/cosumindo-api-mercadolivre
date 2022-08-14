@@ -5,7 +5,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Ml {
 
 	const GET = 'GET';
-    const POST = 'POST'; //Projeto futuro..
+    const POST = 'POST';
     private $url = null;
 
     public function __construct() {
@@ -26,11 +26,6 @@ class Ml {
 	{
 		return $this->executaCURL(self::GET, "users/$idCliente");
 	}
-	
-	// public function getProdutos($user_id)
-	// {
-	// 	return $this->executaCURL(self::GET, "users/$user_id/addresses");
-	// }
 
 	public function executaCURL($metodo, $uri) {
 

@@ -22,14 +22,6 @@
         {
             dadosClienteId();
         });
-
-
-        //setado para teste
-        $('#buscaMlb').val('MLB2074204203');
-        
-        $('#buscaCliente').val('202593498');
-
-        $('#buscaApelido').val('TETE2870021');
         
     });
     
